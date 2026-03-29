@@ -241,9 +241,8 @@ function Navbar({ theme, toggleTheme }) {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-[var(--bg-primary)]/90 backdrop-blur-xl border-b border-[var(--border-light)] shadow-2xl" : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-[var(--bg-primary)]/90 backdrop-blur-xl border-b border-[var(--border-light)] shadow-2xl" : "bg-transparent"
+        }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <button
@@ -292,10 +291,10 @@ function Navbar({ theme, toggleTheme }) {
             {theme === "dark" ? "☀️" : "🌙"}
           </button>
           <button className="text-[var(--text-primary)] p-2" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
-          <div className={`w-5 h-0.5 bg-white mb-1 transition-all ${menuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
-          <div className={`w-5 h-0.5 bg-white mb-1 transition-all ${menuOpen ? "opacity-0" : ""}`} />
-          <div className={`w-5 h-0.5 bg-[var(--icon-color,white)] transition-all ${menuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
-        </button>
+            <div className={`w-5 h-0.5 bg-white mb-1 transition-all ${menuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
+            <div className={`w-5 h-0.5 bg-white mb-1 transition-all ${menuOpen ? "opacity-0" : ""}`} />
+            <div className={`w-5 h-0.5 bg-[var(--icon-color,white)] transition-all ${menuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
+          </button>
         </div>
       </div>
 
@@ -348,18 +347,16 @@ function Hero() {
 
       <div className="relative z-10 text-center max-w-5xl mx-auto">
         <div
-          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#915eff]/30 bg-[#915eff]/10 text-[#915eff] text-sm font-medium mb-8 transition-all duration-700 ${
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
+          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#915eff]/30 bg-[#915eff]/10 text-[#915eff] text-sm font-medium mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
         >
           <span className="w-2 h-2 bg-[#915eff] rounded-full animate-ping" />
           Available for Opportunities
         </div>
 
         <h1
-          className={`text-5xl md:text-7xl font-black text-[var(--text-primary)] tracking-tight leading-none mb-4 transition-all duration-700 delay-100 ${
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`text-5xl md:text-7xl font-black text-[var(--text-primary)] tracking-tight leading-none mb-4 transition-all duration-700 delay-100 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
         >
           Hi, I'm{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#915eff] via-[#6366f1] to-[#3b82f6]">
@@ -368,25 +365,22 @@ function Hero() {
         </h1>
 
         <p
-          className={`text-xl md:text-2xl text-[#aaa6c3] font-semibold mb-4 transition-all duration-700 delay-200 ${
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`text-xl md:text-2xl text-[#aaa6c3] font-semibold mb-4 transition-all duration-700 delay-200 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
         >
           {DATA.role}
         </p>
 
         <p
-          className={`text-base md:text-lg text-[var(--text-tertiary)] max-w-2xl mx-auto mb-10 transition-all duration-700 delay-300 ${
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`text-base md:text-lg text-[var(--text-tertiary)] max-w-2xl mx-auto mb-10 transition-all duration-700 delay-300 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
         >
           {DATA.tagline}
         </p>
 
         <div
-          className={`flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 transition-all duration-700 delay-400 ${
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 transition-all duration-700 delay-400 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
         >
           <button
             onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
@@ -403,9 +397,8 @@ function Hero() {
         </div>
 
         <div
-          className={`grid grid-cols-3 gap-6 max-w-lg mx-auto transition-all duration-700 delay-500 ${
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`grid grid-cols-3 gap-6 max-w-lg mx-auto transition-all duration-700 delay-500 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
         >
           {[
             { value: 2, suffix: "+", label: "Projects Built" },
@@ -444,9 +437,8 @@ function About() {
 
         <div
           ref={ref}
-          className={`mt-16 grid md:grid-cols-2 gap-12 items-center transition-all duration-700 ${
-            inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+          className={`mt-16 grid md:grid-cols-2 gap-12 items-center transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
         >
           <div className="relative flex items-center justify-center">
             <div className="relative w-64 h-64 md:w-80 md:h-80">
@@ -527,9 +519,8 @@ function Skills() {
           {DATA.skills.map((skill, i) => (
             <div
               key={skill.category}
-              className={`group relative bg-[var(--bg-tertiary)] border border-[var(--border-light)] rounded-2xl p-5 hover:border-[#915eff]/30 hover:bg-[#1e1e3a] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(145,94,255,0.1)] ${
-                inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-              }`}
+              className={`group relative bg-[var(--bg-tertiary)] border border-[var(--border-light)] rounded-2xl p-5 hover:border-[#915eff]/30 hover:bg-[#1e1e3a] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(145,94,255,0.1)] ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                }`}
               style={{ transitionDelay: inView ? `${i * 80}ms` : "0ms" }}
             >
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#915eff]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -573,9 +564,8 @@ function Projects() {
           {DATA.projects.map((project, i) => (
             <div
               key={project.id}
-              className={`group relative bg-[var(--bg-tertiary)] border border-[var(--border-light)] rounded-3xl overflow-hidden hover:border-[#915eff]/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] cursor-pointer ${
-                inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+              className={`group relative bg-[var(--bg-tertiary)] border border-[var(--border-light)] rounded-3xl overflow-hidden hover:border-[#915eff]/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] cursor-pointer ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
               style={{ transitionDelay: inView ? `${i * 150}ms` : "0ms" }}
               onClick={() => setActiveProject(activeProject === project.id ? null : project.id)}
             >
@@ -713,9 +703,8 @@ function Achievements() {
           {DATA.achievements.map((ach, i) => (
             <div
               key={i}
-              className={`group relative bg-[var(--bg-tertiary)] border border-[var(--border-light)] rounded-2xl p-7 overflow-hidden hover:border-[var(--border-dark)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] ${
-                inView ? "opacity-100 scale-100" : "opacity-0 scale-95"
-              }`}
+              className={`group relative bg-[var(--bg-tertiary)] border border-[var(--border-light)] rounded-2xl p-7 overflow-hidden hover:border-[var(--border-dark)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] ${inView ? "opacity-100 scale-100" : "opacity-0 scale-95"
+                }`}
               style={{ transitionDelay: inView ? `${i * 150}ms` : "0ms" }}
             >
               <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br ${ach.color} opacity-10 group-hover:opacity-20 transition-opacity duration-500`} />
@@ -750,7 +739,7 @@ function Contact() {
       setStatus({ type: "error", message: "Please fill all fields." });
       return;
     }
-    
+
     setStatus({ type: "loading", message: "Sending..." });
     try {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -761,7 +750,7 @@ function Contact() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to send message.");
-      
+
       setStatus({ type: "success", message: "✅ Message sent! I'll get back to you soon." });
       setForm({ name: "", email: "", message: "" });
     } catch (err) {
@@ -784,9 +773,8 @@ function Contact() {
 
         <div
           ref={ref}
-          className={`mt-16 grid md:grid-cols-2 gap-12 transition-all duration-700 ${
-            inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+          className={`mt-16 grid md:grid-cols-2 gap-12 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
         >
           <div>
             <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-3">Let's build something great</h3>
@@ -826,11 +814,10 @@ function Contact() {
             <h3 className="text-lg font-bold text-[var(--text-primary)] mb-6">Send a Message</h3>
 
             {status.type && (
-              <div className={`mb-5 p-4 border rounded-xl text-sm flex items-center gap-2 ${
-                status.type === 'error' ? 'bg-red-500/10 border-red-500/20 text-red-400' :
-                status.type === 'loading' ? 'bg-blue-500/10 border-blue-500/20 text-blue-400' :
-                'bg-emerald-500/10 border-emerald-500/20 text-emerald-500'
-              }`}>
+              <div className={`mb-5 p-4 border rounded-xl text-sm flex items-center gap-2 ${status.type === 'error' ? 'bg-red-500/10 border-red-500/20 text-red-400' :
+                  status.type === 'loading' ? 'bg-blue-500/10 border-blue-500/20 text-blue-400' :
+                    'bg-emerald-500/10 border-emerald-500/20 text-emerald-500'
+                }`}>
                 {status.message}
               </div>
             )}
@@ -953,7 +940,7 @@ function SectionHeader({ tag, title, subtitle }) {
 
 export default function App() {
   const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || 
+    () => localStorage.getItem("theme") ||
       (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
   );
 
