@@ -23,6 +23,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import emailjs from '@emailjs/browser';
 
 /* ============================================================
    1. DATA
@@ -62,7 +63,7 @@ const DATA = {
     {
       category: "Database",
       icon: "🗄️",
-      items: ["SQL", "MySQL"],
+      items: ["SQL", "MySQL", "MongoDB"],
     },
     {
       category: "AI Platforms",
@@ -222,7 +223,7 @@ function Counter({ target, suffix = "" }) {
    3A. NAVBAR
    ============================================================ */
 
-function Navbar() {
+function Navbar({ theme, toggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -242,7 +243,7 @@ function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-[#050816]/90 backdrop-blur-xl border-b border-white/5 shadow-2xl" : "bg-transparent"
+        scrolled ? "bg-[var(--bg-primary)]/90 backdrop-blur-xl border-b border-[var(--border-light)] shadow-2xl" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -250,9 +251,7 @@ function Navbar() {
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="font-mono text-lg font-bold tracking-tight"
         >
-          <span className="text-[#915eff]">&lt;</span>
-          <span className="text-white">SK</span>
-          <span className="text-[#915eff]">/&gt;</span>
+          <span className="text-[#915eff] font-bold">&lt;Shubham.&gt;</span>
         </button>
 
         <ul className="hidden md:flex items-center gap-8">
@@ -260,7 +259,7 @@ function Navbar() {
             <li key={l}>
               <button
                 onClick={() => scrollTo(l)}
-                className="text-sm text-gray-400 hover:text-white transition-colors duration-200 font-medium tracking-wide relative group"
+                className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 font-medium tracking-wide relative group"
               >
                 {l}
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#915eff] group-hover:w-full transition-all duration-300" />
@@ -268,12 +267,20 @@ function Navbar() {
             </li>
           ))}
         </ul>
+        {/* Desktop Theme Toggle */}
+        <button
+          onClick={toggleTheme}
+          className="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-[var(--bg-tertiary)] border border-[var(--border-dark)] hover:border-[#915eff] transition-all text-[#915eff]"
+        >
+          {theme === "dark" ? "☀️" : "🌙"}
+        </button>
+
 
         <a
           href={DATA.contact.github}
           target="_blank"
           rel="noreferrer"
-          className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg bg-[#915eff] hover:bg-[#7b4fd9] text-white text-sm font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(145,94,255,0.4)]"
+          className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg bg-[#915eff] hover:bg-[#7b4fd9] text-[var(--text-primary)] text-sm font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(145,94,255,0.4)]"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.1.83-.26.83-.58v-2.18c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
@@ -281,20 +288,25 @@ function Navbar() {
           GitHub
         </a>
 
-        <button className="md:hidden text-white p-2" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+        <div className="flex md:hidden items-center gap-4">
+          <button onClick={toggleTheme} className="text-[#915eff] w-8 h-8 flex items-center justify-center rounded-full bg-[var(--bg-tertiary)] border border-[var(--border-dark)]">
+            {theme === "dark" ? "☀️" : "🌙"}
+          </button>
+          <button className="text-[var(--text-primary)] p-2" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
           <div className={`w-5 h-0.5 bg-white mb-1 transition-all ${menuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
           <div className={`w-5 h-0.5 bg-white mb-1 transition-all ${menuOpen ? "opacity-0" : ""}`} />
-          <div className={`w-5 h-0.5 bg-white transition-all ${menuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
+          <div className={`w-5 h-0.5 bg-[var(--icon-color,white)] transition-all ${menuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
         </button>
+        </div>
       </div>
 
       {menuOpen && (
-        <div className="md:hidden bg-[#050816]/95 backdrop-blur-xl border-t border-white/5 px-6 py-4">
+        <div className="md:hidden bg-[var(--bg-primary)]/95 backdrop-blur-xl border-t border-[var(--border-light)] px-6 py-4">
           {links.map((l) => (
             <button
               key={l}
               onClick={() => scrollTo(l)}
-              className="block w-full text-left py-3 text-gray-300 hover:text-white border-b border-white/5 last:border-0"
+              className="block w-full text-left py-3 text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-b border-[var(--border-light)] last:border-0"
             >
               {l}
             </button>
@@ -316,7 +328,7 @@ function Hero() {
   }, []);
 
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050816] px-6">
+    <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[var(--bg-primary)] px-6">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-[#915eff]/20 rounded-full blur-[120px] animate-pulse" />
         <div
@@ -346,7 +358,7 @@ function Hero() {
         </div>
 
         <h1
-          className={`text-5xl md:text-7xl font-black text-white tracking-tight leading-none mb-4 transition-all duration-700 delay-100 ${
+          className={`text-5xl md:text-7xl font-black text-[var(--text-primary)] tracking-tight leading-none mb-4 transition-all duration-700 delay-100 ${
             mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
@@ -365,7 +377,7 @@ function Hero() {
         </p>
 
         <p
-          className={`text-base md:text-lg text-gray-500 max-w-2xl mx-auto mb-10 transition-all duration-700 delay-300 ${
+          className={`text-base md:text-lg text-[var(--text-tertiary)] max-w-2xl mx-auto mb-10 transition-all duration-700 delay-300 ${
             mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
@@ -379,13 +391,13 @@ function Hero() {
         >
           <button
             onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-            className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#915eff] to-[#6366f1] text-white font-semibold hover:shadow-[0_0_30px_rgba(145,94,255,0.5)] transition-all duration-300 hover:scale-105"
+            className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#915eff] to-[#6366f1] text-[var(--text-primary)] font-semibold hover:shadow-[0_0_30px_rgba(145,94,255,0.5)] transition-all duration-300 hover:scale-105"
           >
             View My Work
           </button>
           <button
             onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-            className="px-8 py-3.5 rounded-xl border border-white/10 bg-white/5 text-white font-semibold hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+            className="px-8 py-3.5 rounded-xl border border-[var(--border-dark)] bg-[var(--border-light)] text-[var(--text-primary)] font-semibold hover:bg-white/10 hover:border-[var(--border-dark)] transition-all duration-300"
           >
             Get In Touch
           </button>
@@ -402,16 +414,16 @@ function Hero() {
             { value: 9, suffix: ".26", label: "CGPA" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
-              <div className="text-3xl font-black text-white">
+              <div className="text-3xl font-black text-[var(--text-primary)]">
                 <Counter target={stat.value} suffix={stat.suffix} />
               </div>
-              <div className="text-xs text-gray-500 mt-1">{stat.label}</div>
+              <div className="text-xs text-[var(--text-tertiary)] mt-1">{stat.label}</div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-600">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[var(--text-tertiary)]">
         <span className="text-xs tracking-widest uppercase">Scroll</span>
         <div className="w-px h-12 bg-gradient-to-b from-[#915eff] to-transparent animate-pulse" />
       </div>
@@ -427,7 +439,7 @@ function About() {
   const [ref, inView] = useInView();
 
   return (
-    <section id="about" className="py-24 bg-[#050816] px-6">
+    <section id="about" className="py-24 bg-[var(--bg-primary)] px-6">
       <div className="max-w-7xl mx-auto">
         <SectionHeader tag="Introduction" title="About Me" subtitle="A little bit about who I am" />
 
@@ -446,17 +458,17 @@ function About() {
               <div className="absolute inset-4 rounded-full border border-[#6366f1]/20" />
 
               <div className="absolute inset-8 rounded-full bg-gradient-to-br from-[#915eff] to-[#3b82f6] flex items-center justify-center shadow-[0_0_80px_rgba(145,94,255,0.3)]">
-                <span className="text-7xl md:text-8xl font-black text-white select-none">SK</span>
+                <span className="text-4xl md:text-5xl font-black text-[var(--text-primary)] select-none tracking-tight">Shubham.</span>
               </div>
 
               <div
-                className="absolute -top-2 -right-2 bg-[#1a1a2e] border border-[#915eff]/30 rounded-xl px-3 py-1.5 text-xs text-[#915eff] font-semibold shadow-lg animate-bounce"
+                className="absolute -top-2 -right-2 bg-[var(--bg-tertiary)] border border-[#915eff]/30 rounded-xl px-3 py-1.5 text-xs text-[#915eff] font-semibold shadow-lg animate-bounce"
                 style={{ animationDuration: "3s" }}
               >
                 React.js ⚛️
               </div>
               <div
-                className="absolute -bottom-2 -left-2 bg-[#1a1a2e] border border-emerald-500/30 rounded-xl px-3 py-1.5 text-xs text-emerald-400 font-semibold shadow-lg animate-bounce"
+                className="absolute -bottom-2 -left-2 bg-[var(--bg-tertiary)] border border-emerald-500/30 rounded-xl px-3 py-1.5 text-xs text-emerald-400 font-semibold shadow-lg animate-bounce"
                 style={{ animationDuration: "4s", animationDelay: "0.5s" }}
               >
                 Python 🐍
@@ -465,8 +477,8 @@ function About() {
           </div>
 
           <div>
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">Full-Stack Developer with AI Expertise</h3>
-            <p className="text-gray-400 leading-relaxed mb-6 text-base">{DATA.summary}</p>
+            <h3 className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] mb-4">Full-Stack Developer with AI Expertise</h3>
+            <p className="text-[var(--text-secondary)] leading-relaxed mb-6 text-base">{DATA.summary}</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               {[
@@ -475,9 +487,9 @@ function About() {
                 { label: "📧 Email", value: "shubhamkadam2593@gmail.com" },
                 { label: "📱 Phone", value: "+91 9307798646" },
               ].map((info) => (
-                <div key={info.label} className="bg-white/3 border border-white/8 rounded-xl px-4 py-3">
-                  <div className="text-xs text-gray-500 mb-0.5">{info.label}</div>
-                  <div className="text-sm text-white font-medium truncate">{info.value}</div>
+                <div key={info.label} className="bg-[var(--border-light)] border border-[var(--border-dark)] rounded-xl px-4 py-3">
+                  <div className="text-xs text-[var(--text-tertiary)] mb-0.5">{info.label}</div>
+                  <div className="text-sm text-[var(--text-primary)] font-medium truncate">{info.value}</div>
                 </div>
               ))}
             </div>
@@ -486,7 +498,7 @@ function About() {
               href={DATA.contact.github}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#915eff] text-white font-semibold hover:bg-[#7b4fd9] transition-all duration-200 hover:shadow-[0_0_20px_rgba(145,94,255,0.4)]"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#915eff] text-[var(--text-primary)] font-semibold hover:bg-[#7b4fd9] transition-all duration-200 hover:shadow-[0_0_20px_rgba(145,94,255,0.4)]"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.1.83-.26.83-.58v-2.18c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
@@ -508,7 +520,7 @@ function Skills() {
   const [ref, inView] = useInView();
 
   return (
-    <section id="skills" className="py-24 bg-[#0a0a1a] px-6">
+    <section id="skills" className="py-24 bg-[var(--bg-secondary)] px-6">
       <div className="max-w-7xl mx-auto">
         <SectionHeader tag="Expertise" title="Technical Skills" subtitle="Technologies and tools I work with" />
 
@@ -516,7 +528,7 @@ function Skills() {
           {DATA.skills.map((skill, i) => (
             <div
               key={skill.category}
-              className={`group relative bg-[#1a1a2e] border border-white/6 rounded-2xl p-5 hover:border-[#915eff]/30 hover:bg-[#1e1e3a] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(145,94,255,0.1)] ${
+              className={`group relative bg-[var(--bg-tertiary)] border border-[var(--border-light)] rounded-2xl p-5 hover:border-[#915eff]/30 hover:bg-[#1e1e3a] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(145,94,255,0.1)] ${
                 inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
               }`}
               style={{ transitionDelay: inView ? `${i * 80}ms` : "0ms" }}
@@ -530,7 +542,7 @@ function Skills() {
                   {skill.items.map((item) => (
                     <span
                       key={item}
-                      className="px-2.5 py-1 bg-white/5 border border-white/8 rounded-lg text-xs text-gray-300 font-medium hover:border-[#915eff]/40 hover:text-white transition-all duration-200 cursor-default"
+                      className="px-2.5 py-1 bg-[var(--border-light)] border border-[var(--border-dark)] rounded-lg text-xs text-[var(--text-secondary)] font-medium hover:border-[#915eff]/40 hover:text-[var(--text-primary)] transition-all duration-200 cursor-default"
                     >
                       {item}
                     </span>
@@ -554,7 +566,7 @@ function Projects() {
   const [activeProject, setActiveProject] = useState(null);
 
   return (
-    <section id="projects" className="py-24 bg-[#050816] px-6">
+    <section id="projects" className="py-24 bg-[var(--bg-primary)] px-6">
       <div className="max-w-7xl mx-auto">
         <SectionHeader tag="My Work" title="Technical Projects" subtitle="What I've built — real-world applications with modern tech" />
 
@@ -562,7 +574,7 @@ function Projects() {
           {DATA.projects.map((project, i) => (
             <div
               key={project.id}
-              className={`group relative bg-[#1a1a2e] border border-white/6 rounded-3xl overflow-hidden hover:border-[#915eff]/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] cursor-pointer ${
+              className={`group relative bg-[var(--bg-tertiary)] border border-[var(--border-light)] rounded-3xl overflow-hidden hover:border-[#915eff]/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] cursor-pointer ${
                 inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: inView ? `${i * 150}ms` : "0ms" }}
@@ -574,19 +586,19 @@ function Projects() {
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <div
-                      className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${project.gradient} border ${project.border} text-xs font-semibold text-gray-300 mb-3`}
+                      className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r ${project.gradient} border ${project.border} text-xs font-semibold text-[var(--text-secondary)] mb-3`}
                     >
                       <span>{project.icon}</span>
                       {project.subtitle}
                     </div>
-                    <h3 className="text-xl font-bold text-white leading-snug">{project.title}</h3>
+                    <h3 className="text-xl font-bold text-[var(--text-primary)] leading-snug">{project.title}</h3>
                   </div>
                   <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${project.color} flex items-center justify-center text-xl shadow-lg`}>
                     {project.icon}
                   </div>
                 </div>
 
-                <p className="text-gray-400 text-sm leading-relaxed mb-5">{project.description}</p>
+                <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-5">{project.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-5">
                   {project.tech.map((t) => (
@@ -600,11 +612,11 @@ function Projects() {
                 </div>
 
                 <div className={`overflow-hidden transition-all duration-500 ${activeProject === project.id ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                  <div className="border-t border-white/5 pt-5">
-                    <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Key Highlights</h4>
+                  <div className="border-t border-[var(--border-light)] pt-5">
+                    <h4 className="text-xs font-semibold text-[var(--text-tertiary)] uppercase tracking-wider mb-3">Key Highlights</h4>
                     <ul className="space-y-2">
                       {project.highlights.map((h, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-sm text-gray-300">
+                        <li key={idx} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
                           <span className="mt-1 w-1.5 h-1.5 bg-[#915eff] rounded-full flex-shrink-0" />
                           {h}
                         </li>
@@ -626,7 +638,7 @@ function Projects() {
             href={DATA.contact.github}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/20 transition-all duration-200 text-sm font-medium"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[var(--border-dark)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-dark)] transition-all duration-200 text-sm font-medium"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.1.83-.26.83-.58v-2.18c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81. 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
@@ -647,7 +659,7 @@ function Education() {
   const [ref, inView] = useInView();
 
   return (
-    <section id="education" className="py-24 bg-[#0a0a1a] px-6">
+    <section id="education" className="py-24 bg-[var(--bg-secondary)] px-6">
       <div className="max-w-7xl mx-auto">
         <SectionHeader tag="Academic Background" title="Education" subtitle="My academic journey and qualifications" />
 
@@ -661,19 +673,19 @@ function Education() {
                 className={`relative pl-16 transition-all duration-700 ${inView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"}`}
                 style={{ transitionDelay: inView ? `${i * 120}ms` : "0ms" }}
               >
-                <div className="absolute left-0 top-3 w-12 h-12 rounded-xl bg-[#1a1a2e] border border-[#915eff]/30 flex items-center justify-center text-xl shadow-[0_0_20px_rgba(145,94,255,0.2)]">
+                <div className="absolute left-0 top-3 w-12 h-12 rounded-xl bg-[var(--bg-tertiary)] border border-[#915eff]/30 flex items-center justify-center text-xl shadow-[0_0_20px_rgba(145,94,255,0.2)]">
                   {edu.icon}
                 </div>
 
-                <div className="bg-[#1a1a2e] border border-white/6 rounded-2xl p-5 hover:border-[#915eff]/20 transition-all duration-300 hover:-translate-y-0.5">
+                <div className="bg-[var(--bg-tertiary)] border border-[var(--border-light)] rounded-2xl p-5 hover:border-[#915eff]/20 transition-all duration-300 hover:-translate-y-0.5">
                   <div className="flex items-start justify-between flex-wrap gap-2">
                     <div>
-                      <h3 className="text-base font-bold text-white">{edu.degree}</h3>
-                      <p className="text-sm text-gray-400 mt-0.5">{edu.institution}</p>
+                      <h3 className="text-base font-bold text-[var(--text-primary)]">{edu.degree}</h3>
+                      <p className="text-sm text-[var(--text-secondary)] mt-0.5">{edu.institution}</p>
                     </div>
                     <div className="text-right">
                       <div className="text-sm font-semibold text-[#915eff]">{edu.period}</div>
-                      <div className="text-xs text-gray-500 mt-0.5">{edu.status}</div>
+                      <div className="text-xs text-[var(--text-tertiary)] mt-0.5">{edu.status}</div>
                     </div>
                   </div>
                 </div>
@@ -694,7 +706,7 @@ function Achievements() {
   const [ref, inView] = useInView();
 
   return (
-    <section id="achievements" className="py-24 bg-[#050816] px-6">
+    <section id="achievements" className="py-24 bg-[var(--bg-primary)] px-6">
       <div className="max-w-7xl mx-auto">
         <SectionHeader tag="Recognition" title="Achievements" subtitle="Milestones and recognitions I'm proud of" />
 
@@ -702,7 +714,7 @@ function Achievements() {
           {DATA.achievements.map((ach, i) => (
             <div
               key={i}
-              className={`group relative bg-[#1a1a2e] border border-white/6 rounded-2xl p-7 overflow-hidden hover:border-white/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] ${
+              className={`group relative bg-[var(--bg-tertiary)] border border-[var(--border-light)] rounded-2xl p-7 overflow-hidden hover:border-[var(--border-dark)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] ${
                 inView ? "opacity-100 scale-100" : "opacity-0 scale-95"
               }`}
               style={{ transitionDelay: inView ? `${i * 150}ms` : "0ms" }}
@@ -713,8 +725,8 @@ function Achievements() {
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${ach.color} flex items-center justify-center text-2xl mb-5 shadow-lg`}>
                   {ach.icon}
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">{ach.title}</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">{ach.description}</p>
+                <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">{ach.title}</h3>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{ach.description}</p>
               </div>
             </div>
           ))}
@@ -731,13 +743,44 @@ function Achievements() {
 function Contact() {
   const [ref, inView] = useInView();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState({ type: null, message: "" }); // 'success', 'error', 'loading'
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 4000);
-    setForm({ name: "", email: "", message: "" });
+    if (!form.name || !form.email || !form.message) {
+      setStatus({ type: "error", message: "Please fill all fields." });
+      return;
+    }
+    
+    // Validate email format
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!emailRegex.test(form.email)) {
+      setStatus({ type: "error", message: "Please enter a valid email address." });
+      return;
+    }
+
+    setStatus({ type: "loading", message: "Sending..." });
+    try {
+      const templateParams = {
+        name: form.name,
+        email: form.email,
+        message: form.message,
+      };
+
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        templateParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+      
+      setStatus({ type: "success", message: "✅ Message sent! I'll get back to you soon." });
+      setForm({ name: "", email: "", message: "" });
+    } catch (err) {
+      console.error(err);
+      setStatus({ type: "error", message: `❌ Failed to send: ${err?.text || "Configuration error."}` });
+    }
+    setTimeout(() => setStatus({ type: null, message: "" }), 5000);
   };
 
   const contactLinks = [
@@ -748,7 +791,7 @@ function Contact() {
   ];
 
   return (
-    <section id="contact" className="py-24 bg-[#0a0a1a] px-6">
+    <section id="contact" className="py-24 bg-[var(--bg-secondary)] px-6">
       <div className="max-w-7xl mx-auto">
         <SectionHeader tag="Get In Touch" title="Contact Me" subtitle="Have an opportunity or want to collaborate? Let's talk!" />
 
@@ -759,8 +802,8 @@ function Contact() {
           }`}
         >
           <div>
-            <h3 className="text-2xl font-bold text-white mb-3">Let's build something great</h3>
-            <p className="text-gray-400 mb-8 leading-relaxed">
+            <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-3">Let's build something great</h3>
+            <p className="text-[var(--text-secondary)] mb-8 leading-relaxed">
               I'm currently looking for new opportunities. Whether you have a project in mind, a job opening, or just want to say hi — my
               inbox is always open!
             </p>
@@ -769,11 +812,11 @@ function Contact() {
               {contactLinks.map((link) => (
                 <div
                   key={link.label}
-                  className="flex items-center gap-4 p-4 bg-[#1a1a2e] border border-white/6 rounded-xl hover:border-[#915eff]/20 transition-all duration-200 group"
+                  className="flex items-center gap-4 p-4 bg-[var(--bg-tertiary)] border border-[var(--border-light)] rounded-xl hover:border-[#915eff]/20 transition-all duration-200 group"
                 >
                   <div className="w-10 h-10 bg-[#915eff]/10 rounded-lg flex items-center justify-center text-lg flex-shrink-0">{link.icon}</div>
                   <div>
-                    <div className="text-xs text-gray-500 mb-0.5">{link.label}</div>
+                    <div className="text-xs text-[var(--text-tertiary)] mb-0.5">{link.label}</div>
                     {link.href ? (
                       <a
                         href={link.href}
@@ -792,51 +835,56 @@ function Contact() {
             </div>
           </div>
 
-          <div className="bg-[#1a1a2e] border border-white/6 rounded-3xl p-7">
-            <h3 className="text-lg font-bold text-white mb-6">Send a Message</h3>
+          <div className="bg-[var(--bg-tertiary)] border border-[var(--border-light)] rounded-3xl p-7">
+            <h3 className="text-lg font-bold text-[var(--text-primary)] mb-6">Send a Message</h3>
 
-            {sent && (
-              <div className="mb-5 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-sm text-emerald-400 flex items-center gap-2">
-                ✅ Message sent! I'll get back to you soon.
+            {status.type && (
+              <div className={`mb-5 p-4 border rounded-xl text-sm flex items-center gap-2 ${
+                status.type === 'error' ? 'bg-red-500/10 border-red-500/20 text-red-400' :
+                status.type === 'loading' ? 'bg-blue-500/10 border-blue-500/20 text-blue-400' :
+                'bg-emerald-500/10 border-emerald-500/20 text-emerald-500'
+              }`}>
+                {status.message}
               </div>
             )}
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs text-gray-500 font-medium mb-1.5">Your Name</label>
+                <label className="block text-xs text-[var(--text-tertiary)] font-medium mb-1.5">Your Name</label>
                 <input
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="John Doe"
-                  className="w-full bg-white/3 border border-white/8 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-[#915eff]/50 focus:bg-white/5 transition-all"
+                  className="w-full bg-[var(--border-light)] border border-[var(--border-dark)] rounded-xl px-4 py-3 text-[var(--text-primary)] text-sm placeholder-gray-600 focus:outline-none focus:border-[#915eff]/50 focus:bg-[var(--border-light)] transition-all"
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-500 font-medium mb-1.5">Email Address</label>
+                <label className="block text-xs text-[var(--text-tertiary)] font-medium mb-1.5">Email Address</label>
                 <input
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   placeholder="john@example.com"
-                  className="w-full bg-white/3 border border-white/8 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-[#915eff]/50 focus:bg-white/5 transition-all"
+                  className="w-full bg-[var(--border-light)] border border-[var(--border-dark)] rounded-xl px-4 py-3 text-[var(--text-primary)] text-sm placeholder-gray-600 focus:outline-none focus:border-[#915eff]/50 focus:bg-[var(--border-light)] transition-all"
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-500 font-medium mb-1.5">Message</label>
+                <label className="block text-xs text-[var(--text-tertiary)] font-medium mb-1.5">Message</label>
                 <textarea
                   rows={5}
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                   placeholder="Tell me about your project or opportunity..."
-                  className="w-full bg-white/3 border border-white/8 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-[#915eff]/50 focus:bg-white/5 transition-all resize-none"
+                  className="w-full bg-[var(--border-light)] border border-[var(--border-dark)] rounded-xl px-4 py-3 text-[var(--text-primary)] text-sm placeholder-gray-600 focus:outline-none focus:border-[#915eff]/50 focus:bg-[var(--border-light)] transition-all resize-none"
                 />
               </div>
               <button
                 onClick={handleSubmit}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#915eff] to-[#6366f1] text-white font-semibold hover:shadow-[0_0_30px_rgba(145,94,255,0.4)] transition-all duration-300 hover:scale-[1.02]"
+                disabled={status.type === 'loading'}
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#915eff] to-[#6366f1] text-[var(--text-primary)] font-semibold hover:shadow-[0_0_30px_rgba(145,94,255,0.4)] transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
               >
-                Send Message 🚀
+                {status.type === 'loading' ? 'Sending...' : 'Send Message 🚀'}
               </button>
             </div>
           </div>
@@ -852,26 +900,24 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="bg-[#050816] border-t border-white/5 py-10 px-6">
+    <footer className="bg-[var(--bg-primary)] border-t border-[var(--border-light)] py-10 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <div className="font-mono text-lg font-bold mb-1">
-              <span className="text-[#915eff]">&lt;</span>
-              <span className="text-white">SK</span>
-              <span className="text-[#915eff]">/&gt;</span>
+              <span className="text-[#915eff] font-bold">&lt;Shubham.&gt;</span>
             </div>
-            <p className="text-xs text-gray-600">Shubham Zunjararao Kadam</p>
+            <p className="text-xs text-[var(--text-tertiary)]">Shubham Zunjararao Kadam</p>
           </div>
 
-          <p className="text-xs text-gray-600 text-center">© {new Date().getFullYear()} Shubham Kadam. Built with React & ❤️</p>
+          <p className="text-xs text-[var(--text-tertiary)] text-center">© {new Date().getFullYear()} Shubham Kadam. Built with React & ❤️</p>
 
           <div className="flex items-center gap-4">
             <a
               href={DATA.contact.github}
               target="_blank"
               rel="noreferrer"
-              className="text-gray-600 hover:text-white transition-colors duration-200"
+              className="text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors duration-200"
               aria-label="GitHub"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -880,7 +926,7 @@ function Footer() {
             </a>
             <a
               href={`mailto:${DATA.contact.email}`}
-              className="text-gray-600 hover:text-white transition-colors duration-200"
+              className="text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors duration-200"
               aria-label="Email"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -909,8 +955,8 @@ function SectionHeader({ tag, title, subtitle }) {
       <span className="inline-block px-4 py-1.5 rounded-full border border-[#915eff]/30 bg-[#915eff]/10 text-[#915eff] text-xs font-semibold uppercase tracking-widest mb-4">
         {tag}
       </span>
-      <h2 className="text-4xl md:text-5xl font-black text-white mb-3">{title}</h2>
-      <p className="text-gray-500 text-base max-w-xl mx-auto">{subtitle}</p>
+      <h2 className="text-4xl md:text-5xl font-black text-[var(--text-primary)] mb-3">{title}</h2>
+      <p className="text-[var(--text-tertiary)] text-base max-w-xl mx-auto">{subtitle}</p>
     </div>
   );
 }
@@ -920,19 +966,34 @@ function SectionHeader({ tag, title, subtitle }) {
    ============================================================ */
 
 export default function App() {
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || 
+      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+  );
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+
   return (
-    <div className="bg-[#050816] min-h-screen font-sans antialiased">
+    <div className="bg-[var(--bg-primary)] min-h-screen font-sans antialiased text-[var(--text-primary)] transition-colors duration-300">
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #050816; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
         ::-webkit-scrollbar-thumb { background: #915eff55; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #915eff; }
-        body { background: #050816; }
+        body { background: var(--bg-primary); color: var(--text-primary); transition: background-color 0.3s ease, color 0.3s ease; }
       `}</style>
-
-      <Navbar />
+      <Navbar theme={theme} toggleTheme={toggleTheme} />
       <Hero />
       <About />
       <Skills />
@@ -944,3 +1005,4 @@ export default function App() {
     </div>
   );
 }
+
